@@ -219,6 +219,83 @@ function render() {
 
   // Update coins (120 initial + 25 per discovered station)
   coinCount.textContent = 120 + visitedCount * 25;
+
+  // Update daily quest display
+  renderDailyQuest();
+}
+
+/**
+ * Calculate today's featured station index based on calendar date.
+ * Cycles through all stations automatically day by day.
+ */
+function getDailyStationIndex() {
+  const today = new Date();
+  const dayNumber = Math.floor(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) / 86400000);
+  return Math.abs(dayNumber) % stations.length;
+}
+
+/**
+ * Render today's rotating daily quest panel
+ */
+function renderDailyQuest() {
+  const dailyIdx = getDailyStationIndex();
+  const dailyStation = stations[dailyIdx];
+  if (!dailyStation) return;
+
+  const today = new Date();
+  const dateFormatted = today.toLocaleDateString(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric"
+  });
+
+  const dateLabel = document.getElementById("dailyDateLabel");
+  if (dateLabel) {
+    dateLabel.textContent = dateFormatted.toUpperCase();
+  }
+
+  const iconEl = document.getElementById("dailyQuestIcon");
+  if (iconEl) {
+    iconEl.innerHTML = dailyStation.iconSvg;
+  }
+
+  const titleEl = document.getElementById("dailyQuestTitle");
+  if (titleEl) {
+    titleEl.textContent = `Daily Focus: ${dailyStation.name}`;
+  }
+
+  const descEl = document.getElementById("dailyQuestDesc");
+  const isVisited = visited.has(dailyIdx);
+  if (descEl) {
+    descEl.textContent = isVisited
+      ? `Completed! You have mastered ${dailyStation.name}'s discovery deck and stamped your field book.`
+      : `Today's featured destination is ${dailyStation.name}. Study the deck to collect today's passport stamp.`;
+  }
+
+  const tagEl = document.getElementById("dailyQuestTag");
+  if (tagEl) {
+    if (isVisited) {
+      tagEl.textContent = "COMPLETED ✓";
+      tagEl.style.background = "#dcfce7";
+      tagEl.style.borderColor = "#86efac";
+      tagEl.style.color = "#166534";
+    } else {
+      tagEl.textContent = "ACTIVE";
+      tagEl.style.background = "#ead7b6";
+      tagEl.style.borderColor = "#c9a879";
+      tagEl.style.color = "#704a30";
+    }
+  }
+
+  const btnEl = document.getElementById("viewActiveQuestBtn");
+  if (btnEl) {
+    btnEl.textContent = isVisited ? "REVIEW TODAY'S DECK →" : "START TODAY'S QUEST →";
+  }
+
+  const islandProgress = document.getElementById("islandQuestProgress");
+  if (islandProgress) {
+    islandProgress.textContent = `${visited.size}/${stations.length} DISCOVERED`;
+  }
 }
 
 /**
@@ -346,7 +423,12 @@ function completeStation() {
     visited.add(active);
     saveProgress();
     render();
-    showToast(`Passport stamp collected! You discovered ${stations[active].name}.`);
+    const dailyIdx = getDailyStationIndex();
+    if (active === dailyIdx) {
+      showToast(`Daily Quest Completed! You discovered ${stations[active].name}.`);
+    } else {
+      showToast(`Passport stamp collected! You discovered ${stations[active].name}.`);
+    }
   } else {
     showToast(`Deck reviewed: ${stations[active].name}.`);
   }
@@ -461,11 +543,18 @@ function setupEventListeners() {
 
   // Quest actions
   if (viewActiveQuestBtn) {
-    viewActiveQuestBtn.addEventListener("click", openStation);
+    viewActiveQuestBtn.addEventListener("click", () => {
+      selectStation(getDailyStationIndex());
+    });
   }
   if (questDetailsBtn) {
     questDetailsBtn.addEventListener("click", () => {
-      showToast("Explore all 4 discovery decks to complete this quest.");
+      const remaining = stations.length - visited.size;
+      if (remaining === 0) {
+        showToast("Grand Voyage Completed! You have visited all 4 stations.");
+      } else {
+        showToast(`Keep exploring! ${remaining} destination${remaining > 1 ? 's' : ''} remaining.`);
+      }
     });
   }
 }

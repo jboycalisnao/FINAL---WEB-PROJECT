@@ -128,23 +128,31 @@
             <p style="margin-top:12px;font-size:9px;color:#d7c09a">COLLECT ALL FOUR DEMO STAMPS</p>
           </section>
 
-          <!-- Today's Quests -->
-          <section class="parchment-card">
-            <h3 class="card-title">Today's Quest</h3>
-            <div class="quest">
-              <div class="quest-icon" aria-hidden="true">
+          <!-- Today's Quests (Rotates daily) -->
+          <section class="parchment-card" id="questsSection">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+              <h3 class="card-title" style="margin: 0;">Today's Quest</h3>
+              <span id="dailyDateLabel" style="font: 10px 'DM Mono', monospace; color: #8d765f; letter-spacing: 1px;">TODAY</span>
+            </div>
+            
+            <div class="quest" id="dailyQuestBlock">
+              <div class="quest-icon" id="dailyQuestIcon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M19 17V5a2 2 0 0 0-2-2H4"/>
                   <path d="M8 21h12a2 2 0 0 0 2-2v-2H10a2 2 0 0 0-2 2v2Z"/>
                   <path d="M4 19a2 2 0 0 0 2 2h2V3H6a2 2 0 0 0-2 2Z"/>
                 </svg>
               </div>
-              <div>
-                <strong>The Heritage Seeker</strong>
-                <small>Study a discovery deck and master one story from Iloilo's past.</small>
-                <button type="button" id="viewActiveQuestBtn">VIEW ACTIVE DECK →</button>
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                  <strong id="dailyQuestTitle">Daily Expedition</strong>
+                  <span id="dailyQuestTag" style="font: 9px 'DM Mono', monospace; padding: 1px 5px; border-radius: 2px; border: 1px solid #c9a879; background: #ead7b6; color: #704a30; font-weight: 600;">ACTIVE</span>
+                </div>
+                <small id="dailyQuestDesc">Loading today's featured destination...</small>
+                <button type="button" id="viewActiveQuestBtn">START TODAY'S QUEST →</button>
               </div>
             </div>
+
             <div class="quest">
               <div class="quest-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -152,10 +160,13 @@
                   <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
                 </svg>
               </div>
-              <div>
-                <strong>Curious Traveler</strong>
-                <small>Explore all four discovery decks in this demo journey.</small>
-                <button type="button" id="questDetailsBtn">QUEST DETAILS →</button>
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                  <strong>Island Explorer</strong>
+                  <span id="islandQuestProgress" style="font: 9px 'DM Mono', monospace; color: #8d765f;">0/4</span>
+                </div>
+                <small>Explore all four discovery decks in this demo journey to fill your passport.</small>
+                <button type="button" id="questDetailsBtn">EXPEDITION DETAILS →</button>
               </div>
             </div>
           </section>
