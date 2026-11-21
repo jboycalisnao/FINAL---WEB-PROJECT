@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panay Island Flashcards</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="brand-section">
+        <div class="brand-icon">
+          <!-- Clean stroke compass SVG -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+          </svg>
+        </div>
+        <h1 class="main-title">Panay Island Flashcards</h1>
+      </div>
+
+      <nav class="header-actions" aria-label="Main Navigation">
+        <button type="button" class="tab-button active" id="tab-topics">
+          <!-- Book Open Icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+          <span>Decks</span>
+        </button>
+        <button type="button" class="tab-button" id="tab-badges">
+          <!-- Award Icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+          <span>Badges</span>
+          <span class="badge-count" id="header-badge-count">0/6</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main View Area -->
+  <main class="main-content">
+
+    <!-- View 1: Topics & Deck Selection -->
+    <section id="view-topics" class="view-section active">
+      <div class="section-header-block">
+        <h2 class="section-title">Select a Province or Territory</h2>
+      </div>
+      <div class="topics-grid" id="topics-grid">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- View 2: Flashcard Study Deck -->
+    <section id="view-study" class="view-section">
+      <div class="study-container">
+        
+        <!-- Top Deck Status Bar -->
+        <div class="study-top-bar">
+          <div class="breadcrumbs">
+            <button type="button" class="btn btn-secondary btn-sm" id="study-back-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"/>
+              </svg>
+              <span>Back to Decks</span>
+            </button>
+            <span>/</span>
+            <span class="breadcrumb-active" id="study-topic-breadcrumb">Topic</span>
+          </div>
+
+          <div style="width: 140px;">
+            <div class="progress-track" aria-label="Deck Completion Progress">
+              <div class="progress-fill" id="study-progress-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Flashcard Element -->
+        <div class="flashcard-wrapper" id="flashcard-wrapper" role="button" tabindex="0" aria-label="Interactive flashcard. Click or press Space to flip.">
+          <div class="flashcard-inner">
+            
+            <!-- Front Face: Question / Topic -->
+            <div class="card-face card-front">
+              <div class="card-meta-row">
+                <span class="card-category-tag" id="card-category-front">Category</span>
+                <span class="card-face-hint">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/>
+                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                    <path d="M16 21h5v-5"/>
+                  </svg>
+                  Click card to flip
+                </span>
+              </div>
+
+              <div class="card-content-area">
+                <h3 class="card-question" id="card-question-text">Card Question</h3>
+              </div>
+
+              <div class="card-footer-info">
+                <span id="card-counter-footer-front">Card 1 of 5</span>
+                <span>Keyboard: [Space] Flip &bull; [&larr; / &rarr;] Nav</span>
+              </div>
+            </div>
+
+            <!-- Back Face: Answer & Historical Factoid -->
+            <div class="card-face card-back">
+              <div class="card-meta-row">
+                <span class="card-category-tag" id="card-category-back">Category</span>
+                <span class="card-face-hint">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/>
+                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                    <path d="M16 21h5v-5"/>
+                  </svg>
+                  Click card to flip
+                </span>
+              </div>
+
+              <div class="card-content-area">
+                <p class="card-answer" id="card-answer-text">Card Answer</p>
+                <div class="card-factoid-box">
+                  <div class="card-factoid-title">Historical Factoid</div>
+                  <p class="card-factoid-text" id="card-factoid-text">Fact detail</p>
+                </div>
+              </div>
+
+              <div class="card-footer-info">
+                <span id="card-counter-footer-back">Card 1 of 5</span>
+                <span>Keyboard: [Space] Flip &bull; [&larr; / &rarr;] Nav</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="study-controls">
+          <button type="button" class="btn btn-secondary" id="prev-card-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            <span>Previous</span>
+          </button>
+
+          <div class="study-nav-group">
+            <button type="button" class="btn btn-secondary" id="flip-card-action-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+                <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                <path d="M16 21h5v-5"/>
+              </svg>
+              <span>Flip Card</span>
+            </button>
+            <span class="card-indicator" id="card-counter-indicator">Card 1 of 5</span>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="next-card-btn">
+            <span>Next</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- View 3: Badges Showcase -->
+    <section id="view-badges" class="view-section">
+      <div class="section-header-block">
+        <h2 class="section-title">Earned Digital Badges</h2>
+      </div>
+      <div class="badges-container" id="badges-container">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>Panay Island Knowledge Deck &bull; Iloilo, Capiz, Aklan, Antique</div>
+      <div>
+        <button type="button" class="btn btn-secondary btn-sm" id="reset-progress-btn">
+          Reset Progress
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Hub -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Custom Modal Component (No native alerts/confirms) -->
+  <div class="modal-overlay" id="custom-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Notification</h3>
+        <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        Modal body message here.
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="modal-confirm-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

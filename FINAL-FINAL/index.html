@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KINAADMAN | A Journey Through Panay</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <!-- Header Topbar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="22" y1="12" x2="18" y2="12"/>
+            <line x1="6" y1="12" x2="2" y2="12"/>
+            <line x1="12" y1="6" x2="12" y2="2"/>
+            <line x1="12" y1="22" x2="12" y2="18"/>
+          </svg>
+        </div>
+        <div>
+          <h1>KINAADMAN</h1>
+          <small>THE PANAY HERITAGE QUEST</small>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="top-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="5"/>
+          </svg>
+          <b id="coinCount">120</b> points
+        </span>
+      </div>
+    </header>
+
+    <!-- Main Game Frame -->
+    <main class="game-frame">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="eyebrow">FIELD JOURNAL · REGION VI · WESTERN VISAYAS</div>
+        <h2>Every place has a story.<br>Find yours in Panay.</h2>
+        <p>Set out on a journey through Iloilo's towns, treasured places, and living traditions. Explore each station, study the discovery flashcards, and fill your travel passport one stamp at a time.</p>
+        <div class="hero-bottom">
+          <button type="button" class="primary" id="startExploringBtn">START EXPLORING&nbsp; →</button>
+          <span class="stamp-chip">4 DISCOVERY DECKS · DEMO MAP</span>
+        </div>
+      </section>
+
+      <!-- Main Layout Grid -->
+      <div class="main-grid">
+        <!-- Interactive Adventure Map Section -->
+        <section id="mapSection">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">YOUR ADVENTURE MAP</div>
+              <h3>Explore the island</h3>
+            </div>
+            <span>CHAPTER 01 / ILOILO</span>
+          </div>
+
+          <div class="map-panel">
+            <div class="map-toolbar">
+              <span>PANAY ISLAND · ILOILO PROVINCE</span>
+              <span>MAP: 01</span>
+            </div>
+            <div class="map" aria-label="Illustrative map of Panay with clickable destination markers">
+              <div class="water" aria-hidden="true"></div>
+              <div class="island" aria-hidden="true"></div>
+              <div class="route" aria-hidden="true"></div>
+              <span class="map-label north">NORTH ILOILO</span>
+              <span class="map-label south">SOUTH ILOILO</span>
+              <span class="map-label sea">VISAYAN SEA</span>
+              
+              <button type="button" class="pin p1 active" data-station="0" aria-label="Select Miagao">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </button>
+              <button type="button" class="pin p2" data-station="1" aria-label="Select Iloilo City">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </button>
+              <button type="button" class="pin p3" data-station="2" aria-label="Select southern Iloilo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </button>
+              <button type="button" class="pin p4" data-station="3" aria-label="Select central Iloilo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </button>
+            </div>
+            <div class="map-legend">
+              <span><i class="legend-dot"></i>DISCOVERY DECK</span>
+              <span>SUGGESTED JOURNEY ROUTE</span>
+              <span>UNLOCKABLE STAMP</span>
+            </div>
+          </div>
+
+          <div class="section-head" style="margin-top:20px">
+            <div>
+              <div class="eyebrow">CHOOSE YOUR NEXT STOP</div>
+              <h3>Discovery stations</h3>
+            </div>
+            <span id="stationCount">0 / 4 VISITED</span>
+          </div>
+
+          <div class="destination-list" id="destinationList">
+            <!-- Dynamically populated by script.js with SVG icons -->
+          </div>
+        </section>
+
+        <!-- Sidebar / Traveler's Field Book -->
+        <aside class="side">
+          <!-- Passport & Stamps -->
+          <section class="passport">
+            <div class="eyebrow">TRAVELER'S FIELD BOOK</div>
+            <h3>My Panay Passport</h3>
+            <p>A keepsake of every story you discover.</p>
+            <div class="progress-row">
+              <span>JOURNEY PROGRESS</span>
+              <b id="progressText">0%</b>
+            </div>
+            <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+              <i id="progressBar"></i>
+            </div>
+            <div class="stamps" id="stamps">
+              <!-- Dynamically populated with SVG stamps -->
+            </div>
+            <p style="margin-top:12px;font-size:9px;color:#d7c09a">COLLECT ALL FOUR DEMO STAMPS</p>
+          </section>
+
+          <!-- Today's Quests -->
+          <section class="parchment-card">
+            <h3 class="card-title">Today's Quest</h3>
+            <div class="quest">
+              <div class="quest-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 17V5a2 2 0 0 0-2-2H4"/>
+                  <path d="M8 21h12a2 2 0 0 0 2-2v-2H10a2 2 0 0 0-2 2v2Z"/>
+                  <path d="M4 19a2 2 0 0 0 2 2h2V3H6a2 2 0 0 0-2 2Z"/>
+                </svg>
+              </div>
+              <div>
+                <strong>The Heritage Seeker</strong>
+                <small>Study a discovery deck and master one story from Iloilo's past.</small>
+                <button type="button" id="viewActiveQuestBtn">VIEW ACTIVE DECK →</button>
+              </div>
+            </div>
+            <div class="quest">
+              <div class="quest-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                </svg>
+              </div>
+              <div>
+                <strong>Curious Traveler</strong>
+                <small>Explore all four discovery decks in this demo journey.</small>
+                <button type="button" id="questDetailsBtn">QUEST DETAILS →</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Traveler's Note -->
+          <section class="parchment-card">
+            <h3 class="card-title">Traveler's Note</h3>
+            <div class="tip">Some journeys are measured not by distance, but by the stories we bring home. Flip each flashcard to reveal the living history of Panay.</div>
+          </section>
+        </aside>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span>KINAADMAN · SUROY, SUGID, KAG TUKIB</span>
+        <span>A STUDENT CONCEPT · DESTINATIONS ARE DEMO CONTENT</span>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Discovery Station Flashcard Modal Dialog -->
+  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal flashcard-modal">
+      <!-- Modal Header -->
+      <div class="modal-top-row">
+        <div>
+          <div class="eyebrow" id="modalEyebrow">DISCOVERY STATION 01 · HERITAGE LANDMARK</div>
+          <h3 id="modalTitle">Miagao</h3>
+        </div>
+        <button type="button" class="close" id="modalCloseBtn" aria-label="Close modal">×</button>
+      </div>
+
+      <!-- Flashcard Progress Bar -->
+      <div class="deck-progress-bar-wrap">
+        <div class="deck-progress-track">
+          <div class="deck-progress-fill" id="modalProgressFill"></div>
+        </div>
+        <span class="deck-progress-label" id="modalProgressLabel">Card 1 of 3</span>
+      </div>
+
+      <!-- Interactive 3D Flip Flashcard -->
+      <div class="modal-flashcard-wrapper" id="modalFlashcardWrapper" role="button" tabindex="0" aria-label="Interactive flashcard. Click or press Space to flip.">
+        <div class="modal-flashcard-inner">
+          
+          <!-- Front Face: Question / Topic -->
+          <div class="modal-card-face modal-card-front">
+            <div class="card-meta-row">
+              <span class="card-category-tag" id="modalCardCategoryFront">ARCHITECTURE</span>
+              <span class="card-face-hint">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                  <path d="M16 21h5v-5"/>
+                </svg>
+                Click card to flip
+              </span>
+            </div>
+
+            <div class="modal-card-content">
+              <h4 class="modal-card-question" id="modalCardQuestion">Question goes here</h4>
+            </div>
+
+            <div class="modal-card-footer">
+              <span id="modalCardCounterFront">Card 1 of 3</span>
+              <span class="key-hint">[Space] Flip · [←/→] Navigate</span>
+            </div>
+          </div>
+
+          <!-- Back Face: Answer Narrative & Historical Factoid -->
+          <div class="modal-card-face modal-card-back">
+            <div class="card-meta-row">
+              <span class="card-category-tag" id="modalCardCategoryBack">ARCHITECTURE</span>
+              <span class="card-face-hint">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                  <path d="M16 21h5v-5"/>
+                </svg>
+                Click card to flip
+              </span>
+            </div>
+
+            <div class="modal-card-content">
+              <p class="modal-card-answer" id="modalCardAnswer">Answer narrative goes here</p>
+              <div class="tip modal-factoid-box" id="modalCardFactoidWrap">
+                <strong class="factoid-title">HISTORICAL FACTOID</strong>
+                <span id="modalCardFactoid">Factoid detail goes here</span>
+              </div>
+            </div>
+
+            <div class="modal-card-footer">
+              <span id="modalCardCounterBack">Card 1 of 3</span>
+              <span class="key-hint">[Space] Flip · [←/→] Navigate</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Flashcard Deck Controls Bar -->
+      <div class="modal-deck-controls">
+        <button type="button" class="secondary" id="modalPrevBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Previous
+        </button>
+
+        <button type="button" class="secondary" id="modalFlipBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+            <path d="M16 21h5v-5"/>
+          </svg>
+          Flip Card
+        </button>
+
+        <button type="button" class="primary" id="modalNextBtn">
+          <span>Next Card</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

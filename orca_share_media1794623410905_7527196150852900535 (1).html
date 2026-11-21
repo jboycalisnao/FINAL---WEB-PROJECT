@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KINAADMAN | A Journey Through Panay</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Rye&display=swap');
+:root{
+ --ink:#30251d;--paper:#f3e7cf;--paper2:#e8d5b3;--tan:#c9a879;--brown:#704a30;
+ --deep:#3e2b20;--gold:#d99c3d;--green:#58694a;--red:#a94d36;--muted:#8d765f;
+ --line:rgba(74,48,30,.22);--shadow:0 14px 34px rgba(39,25,15,.18);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:'DM Sans',sans-serif;background:#49382a;
+ background-image:radial-gradient(ellipse at 15% 10%,rgba(218,177,117,.18),transparent 30%),linear-gradient(135deg,#3b2b21,#6c4c35 55%,#38281f);min-height:100vh}
+button{font:inherit;cursor:pointer}
+.shell{max-width:1440px;margin:auto;padding:20px}
+.topbar{display:flex;align-items:center;justify-content:space-between;color:#f5e7cf;padding:10px 4px 18px;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:46px;height:46px;border:2px solid #d9b77d;border-radius:12px;display:grid;place-items:center;font-size:25px;background:#5a3d2b;box-shadow:inset 0 0 0 4px rgba(217,183,125,.12)}
+.brand h1{font:26px 'Rye',serif;letter-spacing:2px;margin:0;color:#f4dfb9}.brand small{display:block;font:10px 'DM Mono',monospace;letter-spacing:2px;color:#d3b88e;margin-top:3px}
+.top-actions{display:flex;align-items:center;gap:10px}.top-pill{border:1px solid #9b7956;background:#38271f;color:#f2dfc2;padding:9px 13px;border-radius:999px;font-size:12px}
+.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#d4a65f;color:#3d2b1e;font-weight:800}
+.game-frame{background:var(--paper);border:7px solid #291e18;border-radius:18px;box-shadow:0 25px 70px #21150f99;overflow:hidden;position:relative}
+.game-frame:before{content:"";position:absolute;inset:7px;pointer-events:none;border:1px solid #b58b5d;border-radius:8px;z-index:2}
+.hero{padding:28px 34px 22px;background:linear-gradient(110deg,#ead9b9,#f7edda 60%,#ddc39b);position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero:after{content:"✦  ✧  ✦";position:absolute;right:5%;top:12px;font-size:45px;letter-spacing:14px;color:#a67b48;opacity:.22}
+.eyebrow{font:11px 'DM Mono',monospace;letter-spacing:2px;color:var(--brown);text-transform:uppercase}
+.hero h2{font:clamp(29px,4vw,48px) 'Rye',serif;line-height:1.08;margin:10px 0 9px;color:#4b3223;max-width:700px}
+.hero p{margin:0;color:#72583f;max-width:650px;font-size:14px;line-height:1.65}
+.hero-bottom{display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.primary{background:#68452d;color:#fff0d4;border:0;padding:12px 18px;border-radius:7px;box-shadow:0 4px 0 #3c281c;font-weight:800;letter-spacing:.3px}
+.primary:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.secondary{background:#f6ecd9;border:1px solid #a9875f;color:#5d412c;padding:11px 16px;border-radius:7px;font-weight:700}
+.stamp-chip{font:11px 'DM Mono',monospace;color:#795b3d;background:#ead7b6;border:1px dashed #b38a57;border-radius:5px;padding:9px 12px}
+.main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,.8fr);gap:20px;padding:22px 26px 28px}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:12px;gap:10px}
+.section-head h3{font:20px 'Rye',serif;margin:0;color:#513724}
+.section-head span{font:10px 'DM Mono',monospace;color:#92775a;letter-spacing:1px}
+.map-panel{background:#e4d1ae;border:1px solid #b9996d;border-radius:12px;padding:13px;box-shadow:inset 0 0 0 4px #efdfc3}
+.map-toolbar{display:flex;justify-content:space-between;align-items:center;padding:2px 4px 10px;font:10px 'DM Mono',monospace;color:#795d40;letter-spacing:1px}
+.map{position:relative;min-height:390px;border-radius:8px;overflow:hidden;background-color:#c6c49c;
+ background-image:linear-gradient(35deg,transparent 47%,#e8dfb9 48%,#e8dfb9 50%,transparent 51%),linear-gradient(120deg,transparent 47%,#aeb48c 48%,#aeb48c 50%,transparent 51%),repeating-linear-gradient(0deg,transparent 0 42px,rgba(92,110,76,.12) 43px 44px),repeating-linear-gradient(90deg,transparent 0 42px,rgba(92,110,76,.12) 43px 44px)}
+.map:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 75% 25%,#a8b28b 0 13%,transparent 14%),radial-gradient(ellipse at 23% 70%,#aeb78e 0 16%,transparent 17%),radial-gradient(ellipse at 52% 52%,#d8c79f 0 18%,transparent 19%);opacity:.8}
+.water{position:absolute;right:-7%;top:-10%;width:28%;height:125%;background:#88aeb0;transform:rotate(12deg);border-left:5px solid #e5d6b5;opacity:.85}
+.island{position:absolute;left:13%;top:12%;width:69%;height:75%;background:#d7c79e;border:3px solid #8d956d;border-radius:48% 40% 45% 38%;transform:rotate(-12deg);box-shadow:inset 0 0 0 9px #c5bd91,inset 0 0 0 11px #e7d8b2}
+.island:before{content:"PANAY";position:absolute;left:36%;top:43%;font:24px 'Rye',serif;letter-spacing:5px;color:#8c7954;transform:rotate(12deg);opacity:.65}
+.map-label{position:absolute;font:9px 'DM Mono',monospace;letter-spacing:1px;color:#6e7654;z-index:2}
+.map-label.north{left:45%;top:13%}.map-label.south{left:42%;bottom:13%}.map-label.sea{right:5%;top:48%;color:#e9f0d9;transform:rotate(90deg)}
+.route{position:absolute;left:26%;top:26%;width:42%;height:46%;border:2px dashed #a65e39;border-left:0;border-bottom:0;border-radius:0 70% 0 0;transform:rotate(18deg);z-index:3;opacity:.8}
+.pin{position:absolute;z-index:4;border:2px solid #f6e7c8;background:#72482e;color:#fff0d2;width:34px;height:34px;border-radius:50% 50% 50% 6px;transform:rotate(-45deg);box-shadow:0 3px 0 #4a3021;display:grid;place-items:center;font-size:13px;transition:.2s}
+.pin span{transform:rotate(45deg)}.pin:hover,.pin.active{background:#c17a32;transform:rotate(-45deg) scale(1.16)}
+.pin.p1{left:44%;top:27%}.pin.p2{left:32%;top:47%}.pin.p3{left:57%;top:57%}.pin.p4{left:42%;top:72%}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;padding:10px 4px 0;font:10px 'DM Mono',monospace;color:#796044}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#8a5534;margin-right:5px}
+.destination-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.destination{display:flex;gap:11px;align-items:center;background:#f6ecd9;border:1px solid #d1b990;border-radius:9px;padding:10px;text-align:left;color:var(--ink);transition:.2s}
+.destination:hover,.destination.selected{border-color:#9b6638;background:#fff4df;box-shadow:0 3px 0 #c5a477}
+.dest-art{width:52px;height:52px;flex:0 0 52px;border-radius:7px;display:grid;place-items:center;font-size:27px;background:linear-gradient(145deg,#b7bd91,#e8d6ad);border:1px solid #b4a078}
+.destination strong{display:block;font-size:12px}.destination small{display:block;color:#92785a;font:9px 'DM Mono',monospace;margin-top:4px}
+.side{display:flex;flex-direction:column;gap:14px}
+.parchment-card{background:#f7edda;border:1px solid #cbb18a;border-radius:10px;padding:15px;box-shadow:0 4px 0 #d7c09a}
+.card-title{font:15px 'Rye',serif;color:#593d29;margin:0 0 12px}
+.passport{background:#55402f;color:#f5e5c7;border-radius:9px;padding:15px;position:relative;overflow:hidden;box-shadow:inset 0 0 0 2px #a78352,inset 0 0 0 5px #55402f;border:1px solid #d0ad78}
+.passport:after{content:"✧";position:absolute;right:10px;top:0;font-size:70px;color:#d2aa68;opacity:.15}
+.passport .eyebrow{color:#d7b77f}.passport h3{font:19px 'Rye',serif;margin:8px 0 4px}.passport p{font-size:10px;color:#d8c3a0;margin:0}
+.progress-row{display:flex;justify-content:space-between;font:10px 'DM Mono',monospace;margin:16px 0 7px;color:#e8d5b5}
+.progress{height:8px;background:#33251d;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;width:25%;background:linear-gradient(90deg,#d39b47,#f0ce80);border-radius:99px;transition:width .3s}
+.stamps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}
+.stamp{aspect-ratio:1;border:1px dashed #9f8057;border-radius:50%;display:grid;place-items:center;color:#9b805d;font-size:20px;background:#e8d9bd;filter:grayscale(1);opacity:.55}
+.stamp.earned{filter:none;opacity:1;background:#f3d99f;border:2px solid #bd8a3f;color:#80532a;box-shadow:inset 0 0 0 3px #f8ebcb}
+.quest{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid #e3d2b5}
+.quest:first-of-type{border-top:0;padding-top:0}.quest-icon{width:35px;height:35px;border-radius:8px;background:#e9d7b4;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.quest strong{font-size:11px;display:block}.quest small{font-size:10px;color:#92795d;line-height:1.45;display:block;margin-top:3px}
+.quest button{margin-top:7px;background:transparent;border:0;padding:0;color:#9b5c2e;font-size:10px;font-weight:800;text-decoration:underline}
+.tip{font-size:11px;line-height:1.55;color:#80674c;background:#eee0c4;padding:10px;border-left:3px solid #b47c3f;border-radius:4px}
+.footer{background:#3c2b20;color:#d7c09a;padding:14px 28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:9px 'DM Mono',monospace;letter-spacing:1px}
+.modal-backdrop{position:fixed;inset:0;background:#1c130dcc;display:none;place-items:center;padding:18px;z-index:20}.modal-backdrop.show{display:grid}
+.modal{max-width:440px;width:100%;background:#f4e7ce;border:5px solid #4a3021;border-radius:14px;padding:23px;box-shadow:var(--shadow);position:relative}
+.modal h3{font:24px 'Rye',serif;margin:5px 0 8px;color:#543824}.modal p{font-size:13px;line-height:1.6;color:#765c42}.modal .close{position:absolute;right:12px;top:10px;border:0;background:transparent;font-size:22px;color:#6b4c32}
+.modal-actions{display:flex;gap:9px;margin-top:18px}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#35251c;color:#f8e7c7;padding:12px 18px;border-radius:8px;font-size:12px;opacity:0;transition:.25s;z-index:30;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:850px){.main-grid{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.passport{grid-column:1/-1}}
+@media(max-width:560px){.shell{padding:7px}.topbar{padding:8px 3px 13px}.brand h1{font-size:21px}.top-pill{display:none}.hero{padding:23px 19px}.main-grid{padding:15px;gap:15px}.map{min-height:310px}.destination-list{grid-template-columns:1fr}.side{display:flex}.footer{padding:13px 17px}.map-label{font-size:8px}}
+</style>
+</head>
+<body>
+<div class="shell">
+ <header class="topbar">
+  <div class="brand"><div class="brand-mark">⌖</div><div><h1>KINAADMAN</h1><small>THE PANAY HERITAGE QUEST</small></div></div>
+  <div class="top-actions"><span class="top-pill">✦ EXPLORER MODE</span><span class="top-pill">🪙 <b id="coinCount">120</b> points</span><div class="avatar">E</div></div>
+ </header>
+ <main class="game-frame">
+  <section class="hero">
+   <div class="eyebrow">FIELD JOURNAL · REGION VI · WESTERN VISAYAS</div>
+   <h2>Every place has a story.<br>Find yours in Panay.</h2>
+   <p>Set out on a journey through Iloilo's towns, treasured places, and living traditions. Explore each station, uncover local stories, and fill your travel passport one stamp at a time.</p>
+   <div class="hero-bottom"><button class="primary" onclick="document.getElementById('mapSection').scrollIntoView({behavior:'smooth'})">START EXPLORING&nbsp; →</button><span class="stamp-chip">✧ 4 DISCOVERY STATIONS · DEMO MAP</span></div>
+  </section>
+  <div class="main-grid">
+   <section id="mapSection">
+    <div class="section-head"><div><div class="eyebrow">YOUR ADVENTURE MAP</div><h3>Explore the island</h3></div><span>CHAPTER 01 / ILOILO</span></div>
+    <div class="map-panel">
+     <div class="map-toolbar"><span>✧ PANAY ISLAND · ILOILO PROVINCE</span><span>MAP: 01</span></div>
+     <div class="map" aria-label="Illustrative map of Panay with clickable destination markers">
+      <div class="water"></div><div class="island"></div><div class="route"></div>
+      <span class="map-label north">NORTH ILOILO</span><span class="map-label south">SOUTH ILOILO</span><span class="map-label sea">VISAYAN SEA</span>
+      <button class="pin p1 active" onclick="selectStation(0)" aria-label="Select Miagao"><span>✦</span></button>
+      <button class="pin p2" onclick="selectStation(1)" aria-label="Select Iloilo City"><span>✦</span></button>
+      <button class="pin p3" onclick="selectStation(2)" aria-label="Select Guimaras view"><span>✦</span></button>
+      <button class="pin p4" onclick="selectStation(3)" aria-label="Select southern Iloilo"><span>✦</span></button>
+     </div>
+     <div class="map-legend"><span><i class="legend-dot"></i>DISCOVERY STATION</span><span>⌁ SUGGESTED JOURNEY ROUTE</span><span>✧ UNLOCKABLE STAMP</span></div>
+    </div>
+    <div class="section-head" style="margin-top:20px"><div><div class="eyebrow">CHOOSE YOUR NEXT STOP</div><h3>Discovery stations</h3></div><span id="stationCount">0 / 4 VISITED</span></div>
+    <div class="destination-list" id="destinationList"></div>
+   </section>
+   <aside class="side">
+    <section class="passport">
+     <div class="eyebrow">TRAVELER'S FIELD BOOK</div><h3>My Panay Passport</h3><p>A keepsake of every story you discover.</p>
+     <div class="progress-row"><span>JOURNEY PROGRESS</span><b id="progressText">0%</b></div><div class="progress"><i id="progressBar"></i></div>
+     <div class="stamps" id="stamps">
+      <div class="stamp">✧</div><div class="stamp">✧</div><div class="stamp">✧</div><div class="stamp">✧</div>
+     </div>
+     <p style="margin-top:12px;font-size:9px;color:#d7c09a">COLLECT ALL FOUR DEMO STAMPS</p>
+    </section>
+    <section class="parchment-card">
+     <h3 class="card-title">✦ Today's Quest</h3>
+     <div class="quest"><div class="quest-icon">📜</div><div><strong>The Heritage Seeker</strong><small>Visit a station and uncover one story from Iloilo's past.</small><button onclick="openStation()">VIEW ACTIVE QUEST →</button></div></div>
+     <div class="quest"><div class="quest-icon">🧭</div><div><strong>Curious Traveler</strong><small>Explore all four stations in this demo journey.</small><button onclick="showToast('Keep exploring to complete this quest!')">QUEST DETAILS →</button></div></div>
+    </section>
+    <section class="parchment-card">
+     <h3 class="card-title">✧ Traveler's Note</h3>
+     <div class="tip">Some journeys are measured not by distance, but by the stories we bring home. Take your time and discover what makes each place unique.</div>
+    </section>
+   </aside>
+  </div>
+  <footer class="footer"><span>KINAADMAN · SUROY, SUGID, KAG TUKIB</span><span>A STUDENT CONCEPT · DESTINATIONS ARE DEMO CONTENT</span></footer>
+ </main>
+</div>
+<div class="modal-backdrop" id="modal">
+ <div class="modal">
+  <button class="close" onclick="closeModal()" aria-label="Close">×</button>
+  <div class="eyebrow" id="modalEyebrow">DISCOVERY STATION 01</div>
+  <h3 id="modalTitle">Miagao</h3>
+  <p id="modalDesc"></p>
+  <div class="tip" id="modalFact"></div>
+  <div class="modal-actions"><button class="primary" id="completeBtn" onclick="completeStation()">COMPLETE STATION ✦</button><button class="secondary" onclick="closeModal()">LATER</button></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const stations=[
+ {name:"Miagao",type:"HERITAGE LANDMARK",icon:"🏛️",desc:"Discover the story of Miagao Church, a landmark known for its distinctive Baroque architecture and detailed façade. It is one of Iloilo's best-known heritage treasures.",fact:"QUEST: Look closely at the church's façade. What local elements and symbols can you spot?"},
+ {name:"Iloilo City",type:"CULTURE & CITY LIFE",icon:"🏙️",desc:"Walk through the city's heritage districts, old streets, and riverside spaces. Iloilo City brings together historic architecture, food, festivals, and contemporary local life.",fact:"QUEST: Name one heritage area or historic structure found in Iloilo City."},
+ {name:"Southern Iloilo",type:"COASTAL DISCOVERY",icon:"🌊",desc:"Follow the coastline and discover how the sea, local livelihoods, and community traditions shape the identity of Iloilo's coastal towns.",fact:"QUEST: What is one way coastal communities preserve their local traditions?"},
+ {name:"Central Iloilo",type:"LOCAL STORIES",icon:"🌾",desc:"Explore the landscapes, town plazas, local products, and everyday traditions that make each municipality distinct. Every stop has a story worth keeping.",fact:"QUEST: Find one local delicacy, craft, or festival associated with a municipality."}
+];
+let active=0;const visited=new Set();
+const list=document.getElementById('destinationList');
+function render(){
+ list.innerHTML=stations.map((s,i)=>`<button class="destination ${active===i?'selected':''}" onclick="selectStation(${i})"><span class="dest-art">${s.icon}</span><span><strong>${s.name}</strong><small>${s.type} ${visited.has(i)?' · ✓ DISCOVERED':''}</small></span></button>`).join('');
+ document.getElementById('stationCount').textContent=`${visited.size} / ${stations.length} VISITED`;
+ document.getElementById('progressText').textContent=Math.round(visited.size/stations.length*100)+'%';
+ document.getElementById('progressBar').style.width=(visited.size/stations.length*100)+'%';
+ document.getElementById('stamps').innerHTML=stations.map((s,i)=>`<div class="stamp ${visited.has(i)?'earned':''}" title="${s.name}">${visited.has(i)?s.icon:'✧'}</div>`).join('');
+ document.querySelectorAll('.pin').forEach((p,i)=>p.classList.toggle('active',i===active));
+}
+function selectStation(i){active=i;render();openStation()}
+function openStation(){
+ const s=stations[active];document.getElementById('modalEyebrow').textContent=`DISCOVERY STATION 0${active+1} · ${s.type}`;
+ document.getElementById('modalTitle').textContent=s.name;document.getElementById('modalDesc').textContent=s.desc;document.getElementById('modalFact').textContent=s.fact;
+ const btn=document.getElementById('completeBtn');btn.disabled=visited.has(active);btn.textContent=visited.has(active)?'STAMP COLLECTED ✓':'COMPLETE STATION ✦';btn.style.opacity=visited.has(active)?'.55':'1';
+ document.getElementById('modal').classList.add('show');
+}
+function completeStation(){
+ if(visited.has(active))return;
+ visited.add(active);document.getElementById('coinCount').textContent=120+visited.size*25;render();closeModal();showToast(`Stamp collected! ${stations[active].name} added to your passport.`);
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+render();
+</script>
+</body>
+</html>
