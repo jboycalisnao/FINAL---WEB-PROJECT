@@ -425,23 +425,28 @@ button {
 }
 
 .pin.p1 {
-  left: 44%;
-  top: 27%;
+  left: 54%;
+  top: 48%;
 }
 
 .pin.p2 {
-  left: 32%;
-  top: 47%;
+  left: 47%;
+  top: 54%;
 }
 
 .pin.p3 {
-  left: 57%;
-  top: 57%;
+  left: 40%;
+  top: 60%;
 }
 
 .pin.p4 {
-  left: 42%;
-  top: 72%;
+  left: 33%;
+  top: 67%;
+}
+
+.pin.p5 {
+  left: 25%;
+  top: 74%;
 }
 
 .map-legend {
@@ -606,8 +611,8 @@ button {
 
 .stamps {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 7px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
   margin-top: 12px;
 }
 

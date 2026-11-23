@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KINAADMAN | A Journey Through Panay</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="district1.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -46,7 +47,7 @@
         <p>Set out on a journey through Iloilo's towns, treasured places, and living traditions. Explore each station, study the discovery flashcards, and fill your travel passport one stamp at a time.</p>
         <div class="hero-bottom">
           <button type="button" class="primary" id="startExploringBtn">START EXPLORING&nbsp; →</button>
-          <span class="stamp-chip">4 DISCOVERY DECKS · DEMO MAP</span>
+          <span class="stamp-chip">5 DISCOVERY DECKS · ILOILO 1ST DISTRICT</span>
         </div>
       </section>
 
@@ -59,12 +60,12 @@
               <div class="eyebrow">YOUR ADVENTURE MAP</div>
               <h3>Explore the island</h3>
             </div>
-            <span>CHAPTER 01 / ILOILO</span>
+            <span>CHAPTER 01 / ILOILO 1ST DISTRICT</span>
           </div>
 
           <div class="map-panel">
             <div class="map-toolbar">
-              <span>PANAY ISLAND · ILOILO PROVINCE</span>
+              <span>PANAY ISLAND · ILOILO DISTRICT 1</span>
               <span>MAP: 01</span>
             </div>
             <div class="map" aria-label="Illustrative map of Panay with clickable destination markers">
@@ -75,16 +76,19 @@
               <span class="map-label south">SOUTH ILOILO</span>
               <span class="map-label sea">VISAYAN SEA</span>
               
-              <button type="button" class="pin p1 active" data-station="0" aria-label="Select Miagao">
+              <button type="button" class="pin p1 active" data-station="0" aria-label="Select Oton">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
-              <button type="button" class="pin p2" data-station="1" aria-label="Select Iloilo City">
+              <button type="button" class="pin p2" data-station="1" aria-label="Select Tigbauan">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
-              <button type="button" class="pin p3" data-station="2" aria-label="Select southern Iloilo">
+              <button type="button" class="pin p3" data-station="2" aria-label="Select Guimbal">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
-              <button type="button" class="pin p4" data-station="3" aria-label="Select central Iloilo">
+              <button type="button" class="pin p4" data-station="3" aria-label="Select Miag-ao">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </button>
+              <button type="button" class="pin p5" data-station="4" aria-label="Select San Joaquin">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
             </div>
@@ -100,7 +104,7 @@
               <div class="eyebrow">CHOOSE YOUR NEXT STOP</div>
               <h3>Discovery stations</h3>
             </div>
-            <span id="stationCount">0 / 4 VISITED</span>
+            <span id="stationCount">0 / 5 VISITED</span>
           </div>
 
           <div class="destination-list" id="destinationList">
@@ -125,7 +129,7 @@
             <div class="stamps" id="stamps">
               <!-- Dynamically populated with SVG stamps -->
             </div>
-            <p style="margin-top:12px;font-size:9px;color:#d7c09a">COLLECT ALL FOUR DEMO STAMPS</p>
+            <p style="margin-top:12px;font-size:9px;color:#d7c09a">COLLECT ALL FIVE DISTRICT 1 STAMPS</p>
           </section>
 
           <!-- Today's Quests (Rotates daily) -->
