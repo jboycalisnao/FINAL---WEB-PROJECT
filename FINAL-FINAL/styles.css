@@ -532,6 +532,39 @@ button {
   gap: 14px;
 }
 
+/* District Filter Tabs Bar */
+.district-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.district-filter-btn {
+  background: #f4e5c8;
+  border: 1px solid #c8a87b;
+  border-radius: 0.375rem;
+  color: #63432a;
+  padding: 6px 11px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.district-filter-btn:hover {
+  background: #eedbc0;
+  border-color: #a47d4e;
+}
+
+.district-filter-btn.active {
+  background: #68452d;
+  color: #fff0d4;
+  border-color: #4a3020;
+  box-shadow: 0 2px 0 #3c281c;
+}
+
 .parchment-card {
   background: #f7edda;
   border: 1px solid #cbb18a;

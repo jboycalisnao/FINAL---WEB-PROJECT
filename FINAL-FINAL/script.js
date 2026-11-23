@@ -1,20 +1,53 @@
 /**
  * KINAADMAN | The Panay Heritage Quest
- * Application Logic: Interactive Flashcard Stations, Map, Passport & Quests
- * Iloilo First District Discovery Engine (Oton, Tigbauan, Guimbal, Miag-ao, San Joaquin)
+ * Application Logic: Interactive Flashcard Stations, District Filtering, Map, Passport & Quests
+ * Supporting all 5 Districts of Iloilo (46 places total across districts 1 to 5)
  * SVG Vector Icons only — No emojis
  */
 
-// Sourced directly from district1.js
-const stations = (typeof window !== "undefined" && Array.isArray(window.ILOILO_DISTRICT_1_DATA))
-  ? window.ILOILO_DISTRICT_1_DATA
-  : (typeof ILOILO_DISTRICT_1_DATA !== "undefined" ? ILOILO_DISTRICT_1_DATA : []);
+// Consolidate all 5 Districts into a unified stations collection
+function buildAllStations() {
+  const d1 = (typeof window !== "undefined" && Array.isArray(window.ILOILO_DISTRICT_1_DATA))
+    ? window.ILOILO_DISTRICT_1_DATA
+    : [];
+
+  const d2Raw = (typeof window !== "undefined" && window.ILOILO_DISTRICT_2_DATA)
+    ? window.ILOILO_DISTRICT_2_DATA
+    : null;
+  const d2 = d2Raw && d2Raw.municipalities ? d2Raw.municipalities.flatMap(m => m.places) : [];
+
+  const d3Raw = (typeof window !== "undefined" && window.ILOILO_DISTRICT_3_DATA)
+    ? window.ILOILO_DISTRICT_3_DATA
+    : null;
+  const d3 = d3Raw && d3Raw.municipalities ? d3Raw.municipalities.flatMap(m => m.places) : [];
+
+  const d4 = (typeof window !== "undefined" && Array.isArray(window.ILOILO_DISTRICT_4_DATA))
+    ? window.ILOILO_DISTRICT_4_DATA
+    : [];
+
+  const d5Raw = (typeof window !== "undefined" && window.ILOILO_DISTRICT_5_DATA)
+    ? window.ILOILO_DISTRICT_5_DATA
+    : null;
+  const d5 = d5Raw && d5Raw.municipalities ? d5Raw.municipalities.flatMap(m => m.places) : [];
+
+  // Tag district numbers uniformly
+  d1.forEach(p => { p.districtNumber = 1; });
+  d2.forEach(p => { p.districtNumber = 2; });
+  d3.forEach(p => { p.districtNumber = 3; });
+  d4.forEach(p => { p.districtNumber = 4; });
+  d5.forEach(p => { p.districtNumber = 5; });
+
+  return [...d1, ...d2, ...d3, ...d4, ...d5];
+}
+
+const allStations = buildAllStations();
 
 // Application State
-let active = 0;              // Current selected station index
-let activeCardIndex = 0;      // Current flashcard index within station
+let activeDistrict = "all";   // "all" | 1 | 2 | 3 | 4 | 5
+let activeStationId = null;   // ID of currently highlighted station
+let activeCardIndex = 0;      // Current flashcard index within modal
 let isCardFlipped = false;    // Flashcard front/back state
-const visited = new Set();    // Set of completed station indices
+const visited = new Set();    // Set of completed station IDs
 let toastTimeout = null;
 
 // DOM Element References
@@ -53,15 +86,32 @@ const modalFlipBtn = document.getElementById("modalFlipBtn");
 const modalNextBtn = document.getElementById("modalNextBtn");
 
 /**
+ * Returns filtered stations based on activeDistrict
+ */
+function getVisibleStations() {
+  if (activeDistrict === "all") {
+    return allStations;
+  }
+  return allStations.filter(s => s.districtNumber === Number(activeDistrict));
+}
+
+/**
+ * Get station object by ID
+ */
+function getStationById(id) {
+  return allStations.find(s => s.id === id);
+}
+
+/**
  * Load progress from localStorage if available
  */
 function loadSavedProgress() {
   try {
-    const saved = localStorage.getItem("kinaadman_visited");
+    const saved = localStorage.getItem("kinaadman_visited_stations");
     if (saved) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) {
-        parsed.forEach(idx => visited.add(idx));
+        parsed.forEach(id => visited.add(id));
       }
     }
   } catch (e) {
@@ -74,7 +124,7 @@ function loadSavedProgress() {
  */
 function saveProgress() {
   try {
-    localStorage.setItem("kinaadman_visited", JSON.stringify([...visited]));
+    localStorage.setItem("kinaadman_visited_stations", JSON.stringify([...visited]));
   } catch (e) {
     console.warn("Could not save progress:", e);
   }
@@ -84,23 +134,32 @@ function saveProgress() {
  * Render the destination list, passport progress, stamps, and map pins
  */
 function render() {
+  const visible = getVisibleStations();
+
+  // If activeStationId is not in visible or null, select first visible
+  if (!activeStationId || !visible.some(s => s.id === activeStationId)) {
+    if (visible.length > 0) {
+      activeStationId = visible[0].id;
+    }
+  }
+
   // Render destination cards with SVG icons
-  list.innerHTML = stations.map((s, i) => `
-    <button type="button" class="destination ${active === i ? 'selected' : ''}" data-station="${i}" aria-label="Explore ${s.municipality || ''} - ${s.name}">
-      <span class="dest-art" aria-hidden="true">${s.iconSvg}</span>
+  list.innerHTML = visible.map(s => `
+    <button type="button" class="destination ${activeStationId === s.id ? 'selected' : ''}" data-station-id="${s.id}" aria-label="Explore ${s.municipality || ''} - ${s.name}">
+      <span class="dest-art" aria-hidden="true">${s.iconSvg || `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>`}</span>
       <span>
         <strong>${s.municipality ? s.municipality.toUpperCase() + ' · ' : ''}${s.name}</strong>
-        <small>${s.type}${visited.has(i) ? ' · DISCOVERED' : ''}</small>
+        <small>DISTRICT ${s.districtNumber} · ${s.type || 'HERITAGE STATION'}${visited.has(s.id) ? ' · DISCOVERED' : ''}</small>
       </span>
     </button>
   `).join("");
 
   // Update counters and progress
   const visitedCount = visited.size;
-  const total = stations.length;
-  const pct = Math.round((visitedCount / total) * 100);
+  const total = allStations.length;
+  const pct = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
 
-  stationCount.textContent = `${visitedCount} / ${total} VISITED`;
+  stationCount.textContent = `${visitedCount} / ${total} VISITED (${visible.length} in view)`;
   progressText.textContent = `${pct}%`;
   progressBar.style.width = `${pct}%`;
 
@@ -108,19 +167,30 @@ function render() {
   const earnedIconSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
   const lockedIconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
 
-  stampsContainer.innerHTML = stations.map((s, i) => `
-    <div class="stamp ${visited.has(i) ? 'earned' : ''}" title="${s.name}" aria-label="${s.name} stamp: ${visited.has(i) ? 'earned' : 'locked'}">
-      ${visited.has(i) ? earnedIconSvg : lockedIconSvg}
-    </div>
-  `).join("");
+  // Render 5 district passport badge stamps
+  const districtStamps = [1, 2, 3, 4, 5].map(dNum => {
+    const dStations = allStations.filter(s => s.districtNumber === dNum);
+    const dVisited = dStations.filter(s => visited.has(s.id)).length;
+    const isCompleted = dStations.length > 0 && dVisited === dStations.length;
+    return `
+      <div class="stamp ${isCompleted ? 'earned' : ''}" title="District ${dNum} (${dVisited}/${dStations.length})" aria-label="District ${dNum} stamp: ${isCompleted ? 'earned' : 'locked'}">
+        ${isCompleted ? earnedIconSvg : lockedIconSvg}
+      </div>
+    `;
+  }).join("");
 
-  // Update map pin active states
-  pins.forEach((pin, i) => {
-    pin.classList.toggle("active", i === active);
+  stampsContainer.innerHTML = districtStamps;
+
+  // Update map pin active states corresponding to districts 1-5
+  pins.forEach(pin => {
+    const pDist = pin.dataset.district;
+    if (pDist) {
+      pin.classList.toggle("active", activeDistrict === pDist || (activeDistrict === "all" && pDist === "1"));
+    }
   });
 
-  // Update coins (120 initial + 25 per discovered station)
-  coinCount.textContent = 120 + visitedCount * 25;
+  // Update coins (120 initial + 15 per discovered station)
+  coinCount.textContent = 120 + visitedCount * 15;
 
   // Update daily quest display
   renderDailyQuest();
@@ -128,20 +198,20 @@ function render() {
 
 /**
  * Calculate today's featured station index based on calendar date.
- * Cycles through all stations automatically day by day.
  */
-function getDailyStationIndex() {
+function getDailyStation() {
+  if (allStations.length === 0) return null;
   const today = new Date();
   const dayNumber = Math.floor(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) / 86400000);
-  return Math.abs(dayNumber) % stations.length;
+  const idx = Math.abs(dayNumber) % allStations.length;
+  return allStations[idx];
 }
 
 /**
  * Render today's rotating daily quest panel
  */
 function renderDailyQuest() {
-  const dailyIdx = getDailyStationIndex();
-  const dailyStation = stations[dailyIdx];
+  const dailyStation = getDailyStation();
   if (!dailyStation) return;
 
   const today = new Date();
@@ -157,7 +227,7 @@ function renderDailyQuest() {
   }
 
   const iconEl = document.getElementById("dailyQuestIcon");
-  if (iconEl) {
+  if (iconEl && dailyStation.iconSvg) {
     iconEl.innerHTML = dailyStation.iconSvg;
   }
 
@@ -167,11 +237,11 @@ function renderDailyQuest() {
   }
 
   const descEl = document.getElementById("dailyQuestDesc");
-  const isVisited = visited.has(dailyIdx);
+  const isVisited = visited.has(dailyStation.id);
   if (descEl) {
     descEl.textContent = isVisited
-      ? `Completed! You have mastered ${dailyStation.name}'s discovery deck and stamped your field book.`
-      : `Today's featured destination is ${dailyStation.name}. Study the deck to collect today's passport stamp.`;
+      ? `Completed! You have mastered ${dailyStation.name} (District ${dailyStation.districtNumber}) and stamped your field book.`
+      : `Today's featured destination is ${dailyStation.name} in District ${dailyStation.districtNumber} (${dailyStation.municipality}). Study the flashcards to stamp your passport.`;
   }
 
   const tagEl = document.getElementById("dailyQuestTag");
@@ -196,32 +266,31 @@ function renderDailyQuest() {
 
   const islandProgress = document.getElementById("islandQuestProgress");
   if (islandProgress) {
-    islandProgress.textContent = `${visited.size}/${stations.length} DISCOVERED`;
+    islandProgress.textContent = `${visited.size}/${allStations.length} DISCOVERED`;
   }
 }
 
 /**
  * Select a station and open its flashcard deck
- * @param {number} index
  */
-function selectStation(index) {
-  if (index >= 0 && index < stations.length) {
-    active = index;
+function selectStationById(id) {
+  const station = getStationById(id);
+  if (station) {
+    activeStationId = id;
     activeCardIndex = 0;
     isCardFlipped = false;
     render();
-    openStation();
+    openStationModal(station);
   }
 }
 
 /**
- * Populate and display the flashcard study deck for the active station
+ * Populate and display the flashcard study deck for a station
  */
-function openStation() {
-  const s = stations[active];
-  if (!s || !s.cards || s.cards.length === 0) return;
+function openStationModal(station) {
+  if (!station || !station.cards || station.cards.length === 0) return;
 
-  renderCurrentCard();
+  renderCurrentCard(station);
   modal.classList.add("show");
   modal.setAttribute("aria-hidden", "false");
 }
@@ -229,15 +298,17 @@ function openStation() {
 /**
  * Render the current card in the active station deck
  */
-function renderCurrentCard() {
-  const s = stations[active];
+function renderCurrentCard(station) {
+  const s = station || getStationById(activeStationId);
+  if (!s || !s.cards) return;
+
   const card = s.cards[activeCardIndex];
   if (!card) return;
 
   const totalCards = s.cards.length;
 
   // Header info
-  modalEyebrow.textContent = `DISTRICT 1 · ${s.municipality ? s.municipality.toUpperCase() + ' · ' : ''}${s.type}`;
+  modalEyebrow.textContent = `DISTRICT ${s.districtNumber} · ${s.municipality ? s.municipality.toUpperCase() + ' · ' : ''}${s.type || 'HERITAGE STATION'}`;
   modalTitle.textContent = s.name;
 
   // Progress Bar
@@ -265,7 +336,7 @@ function renderCurrentCard() {
   modalPrevBtn.disabled = activeCardIndex === 0;
 
   if (activeCardIndex === totalCards - 1) {
-    if (visited.has(active)) {
+    if (visited.has(s.id)) {
       modalNextBtn.innerHTML = `<span>Deck Completed</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
     } else {
       modalNextBtn.innerHTML = `<span>Collect Stamp</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
@@ -301,38 +372,40 @@ function prevCard() {
  * Go to the next card or complete the station deck
  */
 function nextCard() {
-  const s = stations[active];
+  const s = getStationById(activeStationId);
   if (!s) return;
 
   const totalCards = s.cards.length;
 
   if (activeCardIndex < totalCards - 1) {
     activeCardIndex++;
-    renderCurrentCard();
+    renderCurrentCard(s);
   } else {
-    // Finished all cards in this station deck
-    completeStation();
+    completeStation(s);
   }
 }
 
 /**
  * Complete the active station, award passport stamp, and save progress
  */
-function completeStation() {
-  const isFirstCompletion = !visited.has(active);
+function completeStation(station) {
+  const s = station || getStationById(activeStationId);
+  if (!s) return;
+
+  const isFirstCompletion = !visited.has(s.id);
 
   if (isFirstCompletion) {
-    visited.add(active);
+    visited.add(s.id);
     saveProgress();
     render();
-    const dailyIdx = getDailyStationIndex();
-    if (active === dailyIdx) {
-      showToast(`Daily Quest Completed! You discovered ${stations[active].name}.`);
+    const dailyStation = getDailyStation();
+    if (dailyStation && s.id === dailyStation.id) {
+      showToast(`Daily Quest Completed! You discovered ${s.name}.`);
     } else {
-      showToast(`Passport stamp collected! You discovered ${stations[active].name}.`);
+      showToast(`Passport stamp collected! You discovered ${s.name}.`);
     }
   } else {
-    showToast(`Deck reviewed: ${stations[active].name}.`);
+    showToast(`Deck reviewed: ${s.name}.`);
   }
 
   closeModal();
@@ -348,7 +421,6 @@ function closeModal() {
 
 /**
  * Show a temporary toast message
- * @param {string} msg
  */
 function showToast(msg) {
   if (toastTimeout) {
@@ -364,24 +436,64 @@ function showToast(msg) {
 }
 
 /**
+ * Filter by District
+ */
+function setDistrictFilter(district) {
+  activeDistrict = district;
+  const filterBtns = document.querySelectorAll(".district-filter-btn");
+  filterBtns.forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.district === String(district));
+  });
+
+  const headingSpan = document.getElementById("activeDistrictHeaderSpan");
+  if (headingSpan) {
+    headingSpan.textContent = district === "all"
+      ? "ALL DISTRICTS (1 TO 5)"
+      : `DISTRICT ${district}`;
+  }
+
+  const mapSub = document.getElementById("mapDistrictSubtitle");
+  if (mapSub) {
+    mapSub.textContent = district === "all"
+      ? "PANAY ISLAND · ILOILO PROVINCE (DISTRICTS 1-5)"
+      : `PANAY ISLAND · ILOILO DISTRICT ${district}`;
+  }
+
+  render();
+}
+
+/**
  * Bind DOM Event Listeners
  */
 function setupEventListeners() {
   // Destination list delegation
   list.addEventListener("click", (e) => {
     const btn = e.target.closest(".destination");
-    if (btn && btn.dataset.station !== undefined) {
-      const idx = parseInt(btn.dataset.station, 10);
-      selectStation(idx);
+    if (btn && btn.dataset.stationId) {
+      selectStationById(btn.dataset.stationId);
     }
   });
 
   // Map pin buttons
-  pins.forEach((pin, idx) => {
+  pins.forEach(pin => {
     pin.addEventListener("click", () => {
-      selectStation(idx);
+      const pDist = pin.dataset.district;
+      if (pDist) {
+        setDistrictFilter(pDist);
+      }
     });
   });
+
+  // District filter buttons
+  const districtFiltersContainer = document.getElementById("districtFilters");
+  if (districtFiltersContainer) {
+    districtFiltersContainer.addEventListener("click", (e) => {
+      const btn = e.target.closest(".district-filter-btn");
+      if (btn && btn.dataset.district) {
+        setDistrictFilter(btn.dataset.district);
+      }
+    });
+  }
 
   // Hero Start Exploring Button
   if (startExploringBtn && mapSection) {
@@ -446,16 +558,20 @@ function setupEventListeners() {
   // Quest actions
   if (viewActiveQuestBtn) {
     viewActiveQuestBtn.addEventListener("click", () => {
-      selectStation(getDailyStationIndex());
+      const daily = getDailyStation();
+      if (daily) {
+        selectStationById(daily.id);
+      }
     });
   }
+
   if (questDetailsBtn) {
     questDetailsBtn.addEventListener("click", () => {
-      const remaining = stations.length - visited.size;
+      const remaining = allStations.length - visited.size;
       if (remaining === 0) {
-        showToast("Grand Voyage Completed! You have visited all 4 stations.");
+        showToast("Master Voyager! You have discovered all 46 places across all 5 districts.");
       } else {
-        showToast(`Keep exploring! ${remaining} destination${remaining > 1 ? 's' : ''} remaining.`);
+        showToast(`Keep exploring! ${remaining} destination${remaining > 1 ? 's' : ''} remaining across 5 districts.`);
       }
     });
   }

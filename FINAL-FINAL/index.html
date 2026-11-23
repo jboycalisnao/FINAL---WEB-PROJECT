@@ -6,6 +6,10 @@
   <title>KINAADMAN | A Journey Through Panay</title>
   <link rel="stylesheet" href="styles.css">
   <script src="district1.js" defer></script>
+  <script src="iloilo-district-2-dataset.js" defer></script>
+  <script src="iloilo-district-3-dataset.js" defer></script>
+  <script src="district4.js" defer></script>
+  <script src="iloilo-district-5-dataset.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -44,10 +48,10 @@
       <section class="hero">
         <div class="eyebrow">FIELD JOURNAL · REGION VI · WESTERN VISAYAS</div>
         <h2>Every place has a story.<br>Find yours in Panay.</h2>
-        <p>Set out on a journey through Iloilo's towns, treasured places, and living traditions. Explore each station, study the discovery flashcards, and fill your travel passport one stamp at a time.</p>
+        <p>Set out on a journey through Iloilo's towns, treasured places, and living traditions. Explore each station across all 5 congressional districts, study the discovery flashcards, and fill your travel passport one stamp at a time.</p>
         <div class="hero-bottom">
           <button type="button" class="primary" id="startExploringBtn">START EXPLORING&nbsp; →</button>
-          <span class="stamp-chip">5 DISCOVERY DECKS · ILOILO 1ST DISTRICT</span>
+          <span class="stamp-chip">46 DISCOVERY STATIONS · ILOILO DISTRICTS 1 TO 5</span>
         </div>
       </section>
 
@@ -60,42 +64,53 @@
               <div class="eyebrow">YOUR ADVENTURE MAP</div>
               <h3>Explore the island</h3>
             </div>
-            <span>CHAPTER 01 / ILOILO 1ST DISTRICT</span>
+            <span id="activeDistrictHeaderSpan">ALL DISTRICTS (1 TO 5)</span>
+          </div>
+
+          <!-- District Navigation Tabs -->
+          <div class="district-filter-bar" id="districtFilters" role="tablist" aria-label="Filter by congressional district">
+            <button type="button" class="district-filter-btn active" data-district="all" role="tab">All Districts (46)</button>
+            <button type="button" class="district-filter-btn" data-district="1" role="tab">District 1 (5)</button>
+            <button type="button" class="district-filter-btn" data-district="2" role="tab">District 2 (8)</button>
+            <button type="button" class="district-filter-btn" data-district="3" role="tab">District 3 (21)</button>
+            <button type="button" class="district-filter-btn" data-district="4" role="tab">District 4 (5)</button>
+            <button type="button" class="district-filter-btn" data-district="5" role="tab">District 5 (7)</button>
           </div>
 
           <div class="map-panel">
             <div class="map-toolbar">
-              <span>PANAY ISLAND · ILOILO DISTRICT 1</span>
-              <span>MAP: 01</span>
+              <span id="mapDistrictSubtitle">PANAY ISLAND · ILOILO PROVINCE (DISTRICTS 1-5)</span>
+              <span>MAP: 01-05</span>
             </div>
-            <div class="map" aria-label="Illustrative map of Panay with clickable destination markers">
+            <div class="map" aria-label="Illustrative map of Panay with clickable district markers">
               <div class="water" aria-hidden="true"></div>
               <div class="island" aria-hidden="true"></div>
               <div class="route" aria-hidden="true"></div>
-              <span class="map-label north">NORTH ILOILO</span>
-              <span class="map-label south">SOUTH ILOILO</span>
+              <span class="map-label north">NORTH ILOILO (D5)</span>
+              <span class="map-label south">SOUTH ILOILO (D1)</span>
               <span class="map-label sea">VISAYAN SEA</span>
               
-              <button type="button" class="pin p1 active" data-station="0" aria-label="Select Oton">
+              <!-- 5 District Map Pins -->
+              <button type="button" class="pin p1" data-district="5" aria-label="Select District 5 (Carles, Concepcion, Estancia, Batad, Barotac Viejo)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
-              <button type="button" class="pin p2" data-station="1" aria-label="Select Tigbauan">
+              <button type="button" class="pin p2" data-district="4" aria-label="Select District 4 (Passi, Dumangas, Dingle, Dueñas, Barotac Nuevo)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
-              <button type="button" class="pin p3" data-station="2" aria-label="Select Guimbal">
+              <button type="button" class="pin p3" data-district="3" aria-label="Select District 3 (Cabatuan, Calinog, Janiuay, Lambunao, Maasin, Mina, Pototan, Badiangan, Bingawan)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
-              <button type="button" class="pin p4" data-station="3" aria-label="Select Miag-ao">
+              <button type="button" class="pin p4" data-district="2" aria-label="Select District 2 (Sta. Barbara, Pavia, Leon, Alimodian, Leganes, San Miguel, New Lucena, Zarraga)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
-              <button type="button" class="pin p5" data-station="4" aria-label="Select San Joaquin">
+              <button type="button" class="pin p5 active" data-district="1" aria-label="Select District 1 (Miag-ao, San Joaquin, Guimbal, Tigbauan, Oton)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </button>
             </div>
             <div class="map-legend">
-              <span><i class="legend-dot"></i>DISCOVERY DECK</span>
-              <span>SUGGESTED JOURNEY ROUTE</span>
-              <span>UNLOCKABLE STAMP</span>
+              <span><i class="legend-dot"></i>CLICK A PIN OR TAB TO FILTER BY DISTRICT</span>
+              <span>46 PLACES ENCODED</span>
+              <span>5 DISTRICT STAMPS</span>
             </div>
           </div>
 
@@ -104,7 +119,7 @@
               <div class="eyebrow">CHOOSE YOUR NEXT STOP</div>
               <h3>Discovery stations</h3>
             </div>
-            <span id="stationCount">0 / 5 VISITED</span>
+            <span id="stationCount">0 / 46 VISITED</span>
           </div>
 
           <div class="destination-list" id="destinationList">
@@ -127,9 +142,9 @@
               <i id="progressBar"></i>
             </div>
             <div class="stamps" id="stamps">
-              <!-- Dynamically populated with SVG stamps -->
+              <!-- Dynamically populated with 5 District SVG stamps -->
             </div>
-            <p style="margin-top:12px;font-size:9px;color:#d7c09a">COLLECT ALL FIVE DISTRICT 1 STAMPS</p>
+            <p style="margin-top:12px;font-size:9px;color:#d7c09a">COLLECT ALL FIVE DISTRICT STAMPS</p>
           </section>
 
           <!-- Today's Quests (Rotates daily) -->
@@ -166,10 +181,10 @@
               </div>
               <div style="flex: 1;">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
-                  <strong>Island Explorer</strong>
-                  <span id="islandQuestProgress" style="font: 9px 'DM Mono', monospace; color: #8d765f;">0/4</span>
+                  <strong>Panay Province Explorer</strong>
+                  <span id="islandQuestProgress" style="font: 9px 'DM Mono', monospace; color: #8d765f;">0/46</span>
                 </div>
-                <small>Explore all four discovery decks in this demo journey to fill your passport.</small>
+                <small>Explore and study discovery decks across all five congressional districts of Iloilo.</small>
                 <button type="button" id="questDetailsBtn">EXPEDITION DETAILS →</button>
               </div>
             </div>
@@ -178,7 +193,7 @@
           <!-- Traveler's Note -->
           <section class="parchment-card">
             <h3 class="card-title">Traveler's Note</h3>
-            <div class="tip">Some journeys are measured not by distance, but by the stories we bring home. Flip each flashcard to reveal the living history of Panay.</div>
+            <div class="tip">Some journeys are measured not by distance, but by the stories we bring home. Flip each flashcard to reveal the living history and heritage of Panay.</div>
           </section>
         </aside>
       </div>
@@ -186,7 +201,7 @@
       <!-- Footer -->
       <footer class="footer">
         <span>KINAADMAN · SUROY, SUGID, KAG TUKIB</span>
-        <span>A STUDENT CONCEPT · DESTINATIONS ARE DEMO CONTENT</span>
+        <span>COVERING ALL 5 CONGRESSIONAL DISTRICTS OF ILOILO · 46 ENCODED STATIONS</span>
       </footer>
     </main>
   </div>
@@ -197,8 +212,8 @@
       <!-- Modal Header -->
       <div class="modal-top-row">
         <div>
-          <div class="eyebrow" id="modalEyebrow">DISCOVERY STATION 01 · HERITAGE LANDMARK</div>
-          <h3 id="modalTitle">Miagao</h3>
+          <div class="eyebrow" id="modalEyebrow">DISTRICT 1 · HERITAGE LANDMARK</div>
+          <h3 id="modalTitle">Miag-ao Church</h3>
         </div>
         <button type="button" class="close" id="modalCloseBtn" aria-label="Close modal">×</button>
       </div>
