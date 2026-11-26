@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KINAADMAN | A Journey Through Panay</title>
+  <!-- Leaflet Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="district1.js" defer></script>
   <script src="iloilo-district-2-dataset.js" defer></script>
   <script src="iloilo-district-3-dataset.js" defer></script>
@@ -82,36 +85,8 @@
               <span id="mapDistrictSubtitle">PANAY ISLAND · ILOILO PROVINCE (DISTRICTS 1-5)</span>
               <span>MAP: 01-05</span>
             </div>
-            <div class="map" aria-label="Illustrative map of Panay with clickable district markers">
-              <div class="water" aria-hidden="true"></div>
-              <div class="island" aria-hidden="true"></div>
-              <div class="route" aria-hidden="true"></div>
-              <span class="map-label north">NORTH ILOILO (D5)</span>
-              <span class="map-label south">SOUTH ILOILO (D1)</span>
-              <span class="map-label sea">VISAYAN SEA</span>
-              
-              <!-- 5 District Map Pins -->
-              <button type="button" class="pin p1" data-district="5" aria-label="Select District 5 (Carles, Concepcion, Estancia, Batad, Barotac Viejo)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </button>
-              <button type="button" class="pin p2" data-district="4" aria-label="Select District 4 (Passi, Dumangas, Dingle, Dueñas, Barotac Nuevo)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </button>
-              <button type="button" class="pin p3" data-district="3" aria-label="Select District 3 (Cabatuan, Calinog, Janiuay, Lambunao, Maasin, Mina, Pototan, Badiangan, Bingawan)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </button>
-              <button type="button" class="pin p4" data-district="2" aria-label="Select District 2 (Sta. Barbara, Pavia, Leon, Alimodian, Leganes, San Miguel, New Lucena, Zarraga)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </button>
-              <button type="button" class="pin p5 active" data-district="1" aria-label="Select District 1 (Miag-ao, San Joaquin, Guimbal, Tigbauan, Oton)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </button>
-            </div>
-            <div class="map-legend">
-              <span><i class="legend-dot"></i>CLICK A PIN OR TAB TO FILTER BY DISTRICT</span>
-              <span>46 PLACES ENCODED</span>
-              <span>5 DISTRICT STAMPS</span>
-            </div>
+            <!-- Interactive Map Container -->
+            <div id="leafletMap" class="leaflet-adventure-map" role="region" aria-label="Map of Panay Island with destination coordinates"></div>
           </div>
 
           <div class="section-head" style="margin-top:20px">
@@ -215,15 +190,31 @@
           <div class="eyebrow" id="modalEyebrow">DISTRICT 1 · HERITAGE LANDMARK</div>
           <h3 id="modalTitle">Miag-ao Church</h3>
         </div>
-        <button type="button" class="close" id="modalCloseBtn" aria-label="Close modal">×</button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="edit-deck-btn" id="modalEditDeckBtn" title="Manage and edit flashcard contents">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Edit Cards
+          </button>
+          <button type="button" class="close" id="modalCloseBtn" aria-label="Close modal">×</button>
+        </div>
       </div>
 
-      <!-- Flashcard Progress Bar -->
+      <!-- Flashcard Progress Bar & Reading Countdown -->
       <div class="deck-progress-bar-wrap">
         <div class="deck-progress-track">
           <div class="deck-progress-fill" id="modalProgressFill"></div>
         </div>
         <span class="deck-progress-label" id="modalProgressLabel">Card 1 of 3</span>
+        <span class="card-reading-timer-badge" id="cardReadingTimerBadge" title="Required reading time">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span id="readingTimerCount">15s</span>
+        </span>
       </div>
 
       <!-- Interactive 3D Flip Flashcard -->
@@ -314,6 +305,93 @@
         </button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Flashcard Deck CRUD Management Modal -->
+  <div class="modal-backdrop" id="crudModal" role="dialog" aria-modal="true" aria-labelledby="crudModalTitle" aria-hidden="true">
+    <div class="modal crud-modal">
+      <div class="modal-top-row">
+        <div>
+          <div class="eyebrow" id="crudModalEyebrow">FLASHCARD CONTENT MANAGER</div>
+          <h3 id="crudModalTitle">Edit Flashcards</h3>
+        </div>
+        <button type="button" class="close" id="crudCloseBtn" aria-label="Close editor">×</button>
+      </div>
+
+      <!-- Card Selection Tabs & Add Button -->
+      <div class="crud-toolbar">
+        <div class="crud-tabs-container">
+          <span class="crud-tabs-label">Cards in Deck:</span>
+          <div class="crud-tabs-list" id="crudTabsList" role="tablist" aria-label="Flashcards in this deck">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+        <button type="button" class="secondary crud-add-card-btn" id="crudAddCardBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Add Card
+        </button>
+      </div>
+
+      <!-- Card Edit Form -->
+      <form id="crudCardForm" class="crud-form" onsubmit="return false;">
+        <div class="form-group">
+          <label for="crudCategoryInput">Category / Header Tag</label>
+          <input type="text" id="crudCategoryInput" class="crud-input" placeholder="e.g. ARCHITECTURE & UNESCO" required maxlength="60">
+        </div>
+
+        <div class="form-group">
+          <label for="crudQuestionInput">Front Face: Question / Topic</label>
+          <textarea id="crudQuestionInput" class="crud-textarea" rows="3" placeholder="Enter flashcard prompt or question..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="crudAnswerInput">Back Face: Answer Narrative</label>
+          <textarea id="crudAnswerInput" class="crud-textarea" rows="4" placeholder="Enter answer narrative..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="crudFactoidInput">Historical Factoid</label>
+          <textarea id="crudFactoidInput" class="crud-textarea" rows="2" placeholder="Enter historical factoid or context note..."></textarea>
+        </div>
+
+        <div class="crud-form-actions">
+          <div class="crud-left-actions">
+            <button type="button" class="danger-btn" id="crudDeleteBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Delete Card
+            </button>
+            <button type="button" class="subtle-link-btn" id="crudResetDeckBtn">Reset Deck to Default</button>
+          </div>
+          <div class="crud-right-actions">
+            <button type="button" class="secondary" id="crudCancelBtn">Done</button>
+            <button type="button" class="primary" id="crudSaveBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Save Card
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Custom Confirmation Dialog (Replaces native browser confirm) -->
+  <div class="modal-backdrop" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" aria-hidden="true">
+    <div class="modal confirm-modal-box">
+      <h3 id="confirmModalTitle">Confirm Action</h3>
+      <p id="confirmModalMessage">Are you sure you want to proceed?</p>
+      <div class="confirm-actions">
+        <button type="button" class="secondary" id="confirmCancelBtn">Cancel</button>
+        <button type="button" class="danger-btn" id="confirmProceedBtn">Confirm</button>
+      </div>
     </div>
   </div>
 

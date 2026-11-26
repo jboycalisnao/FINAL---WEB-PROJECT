@@ -295,176 +295,267 @@ button {
   letter-spacing: 1px;
 }
 
-.map {
-  position: relative;
-  min-height: 390px;
+/* Interactive Leaflet Map */
+.leaflet-adventure-map {
+  width: 100%;
+  height: 430px;
+  min-height: 430px;
   border-radius: 8px;
+  border: 1px solid #b9996d;
+  box-shadow: inset 0 0 0 2px #dfcdab;
+  background-color: #f4ecdc;
+  z-index: 1;
   overflow: hidden;
-  background-color: #c6c49c;
-  background-image: 
-    linear-gradient(35deg, transparent 47%, #e8dfb9 48%, #e8dfb9 50%, transparent 51%),
-    linear-gradient(120deg, transparent 47%, #aeb48c 48%, #aeb48c 50%, transparent 51%),
-    repeating-linear-gradient(0deg, transparent 0 42px, rgba(92, 110, 76, 0.12) 43px 44px),
-    repeating-linear-gradient(90deg, transparent 0 42px, rgba(92, 110, 76, 0.12) 43px 44px);
 }
 
-.map::before {
-  content: "";
+/* Warm vintage / parchment cartography tint on map tiles (no watermarks, no blocks) */
+.leaflet-tile-pane {
+  filter: sepia(0.12) contrast(1.02) brightness(0.99);
+}
+
+/* Custom Leaflet Controls */
+.leaflet-container {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  background-color: #f3ebd9 !important;
+}
+
+.leaflet-bar {
+  border-radius: 0.375rem !important;
+  border: 1px solid #c8a87b !important;
+  box-shadow: 0 2px 6px rgba(60, 40, 20, 0.16) !important;
+  overflow: hidden;
+}
+
+.leaflet-bar a {
+  background-color: #fffaf0 !important;
+  color: #63432a !important;
+  border-bottom: 1px solid #ebd8b7 !important;
+  transition: background-color 0.15s ease;
+}
+
+.leaflet-bar a:hover {
+  background-color: #f5e4c8 !important;
+  color: #3b281c !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(255, 250, 240, 0.85) !important;
+  color: #8c7054 !important;
+  font-size: 9px !important;
+  font-family: 'DM Mono', monospace !important;
+  border-top-left-radius: 4px;
+}
+
+/* Custom Leaflet SVG Map Pin */
+.custom-leaflet-pin-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-map-pin {
+  position: relative;
+  width: 28px;
+  height: 36px;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.15s ease;
+  filter: drop-shadow(0 3px 4px rgba(45, 30, 15, 0.35));
+}
+
+.custom-map-pin:hover {
+  transform: translateY(-4px) scale(1.15);
+  filter: drop-shadow(0 6px 9px rgba(45, 30, 15, 0.45));
+  z-index: 9999 !important;
+}
+
+.custom-map-pin.selected {
+  transform: translateY(-5px) scale(1.22);
+  filter: drop-shadow(0 7px 10px rgba(138, 85, 52, 0.55));
+  z-index: 10000 !important;
+}
+
+.custom-map-pin .pin-base {
+  fill: #8a5534;
+  stroke: #442a18;
+  stroke-width: 1.5;
+  transition: fill 0.2s ease;
+}
+
+.custom-map-pin .pin-core {
+  fill: #fffdf7;
+  stroke: #8a5534;
+  stroke-width: 1.2;
+}
+
+/* District theme variants */
+.custom-map-pin.d1 .pin-base { fill: #8a5534; }
+.custom-map-pin.d2 .pin-base { fill: #725737; }
+.custom-map-pin.d3 .pin-base { fill: #4a633c; }
+.custom-map-pin.d4 .pin-base { fill: #945729; }
+.custom-map-pin.d5 .pin-base { fill: #36606d; }
+
+.custom-map-pin.visited .pin-base {
+  fill: #2d663e;
+  stroke: #164223;
+}
+.custom-map-pin.visited .pin-core {
+  fill: #dcfce7;
+  stroke: #1b733c;
+}
+
+.custom-map-pin.selected .pin-base {
+  fill: #c57f2a;
+  stroke: #663e10;
+}
+.custom-map-pin.selected .pin-core {
+  fill: #fff9e6;
+  stroke: #c57f2a;
+}
+
+.custom-map-pin .pin-label {
   position: absolute;
-  inset: 0;
-  background: 
-    radial-gradient(ellipse at 75% 25%, #a8b28b 0 13%, transparent 14%),
-    radial-gradient(ellipse at 23% 70%, #aeb78e 0 16%, transparent 17%),
-    radial-gradient(ellipse at 52% 52%, #d8c79f 0 18%, transparent 19%);
-  opacity: 0.8;
+  top: 6px;
+  left: 0;
+  width: 28px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  color: #4a2f1b;
+  pointer-events: none;
+  line-height: 14px;
 }
 
-.water {
-  position: absolute;
-  right: -7%;
-  top: -10%;
-  width: 28%;
-  height: 125%;
-  background: #88aeb0;
-  transform: rotate(12deg);
-  border-left: 5px solid #e5d6b5;
-  opacity: 0.85;
+.custom-map-pin.visited .pin-label {
+  color: #14532d;
 }
 
-.island {
-  position: absolute;
-  left: 13%;
-  top: 12%;
-  width: 69%;
-  height: 75%;
-  background: #d7c79e;
-  border: 3px solid #8d956d;
-  border-radius: 48% 40% 45% 38%;
-  transform: rotate(-12deg);
-  box-shadow: inset 0 0 0 9px #c5bd91, inset 0 0 0 11px #e7d8b2;
+.custom-map-pin.selected .pin-label {
+  color: #78350f;
 }
 
-.island::before {
-  content: "PANAY";
-  position: absolute;
-  left: 36%;
-  top: 43%;
-  font: 24px 'Rye', serif;
-  letter-spacing: 5px;
-  color: #8c7954;
-  transform: rotate(12deg);
-  opacity: 0.65;
+/* ==========================================================
+   CUSTOM CSS HOVER BOX (LEAFLET TOOLTIP)
+   ========================================================== */
+.leaflet-tooltip.custom-leaflet-hover-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-.map-label {
-  position: absolute;
-  font: 9px 'DM Mono', monospace;
-  letter-spacing: 1px;
-  color: #6e7654;
-  z-index: 2;
+.leaflet-tooltip-top.custom-leaflet-hover-box:before {
+  border-top-color: #bfa075 !important;
 }
 
-.map-label.north {
-  left: 45%;
-  top: 13%;
+.map-hover-box {
+  background: #fffcf5;
+  border: 1px solid #c8a87b;
+  border-radius: 0.375rem; /* rounded-md */
+  padding: 11px 13px;
+  box-shadow: 0 6px 18px rgba(45, 30, 20, 0.22), 0 1px 0 #bfa075;
+  width: 260px;
+  max-width: 290px;
+  color: #3b281c;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  pointer-events: none;
+  animation: hoverBoxFadeIn 0.16s ease-out;
 }
 
-.map-label.south {
-  left: 42%;
-  bottom: 13%;
+@keyframes hoverBoxFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.map-label.sea {
-  right: 5%;
-  top: 48%;
-  color: #e9f0d9;
-  transform: rotate(90deg);
-}
-
-.route {
-  position: absolute;
-  left: 26%;
-  top: 26%;
-  width: 42%;
-  height: 46%;
-  border: 2px dashed #a65e39;
-  border-left: 0;
-  border-bottom: 0;
-  border-radius: 0 70% 0 0;
-  transform: rotate(18deg);
-  z-index: 3;
-  opacity: 0.8;
-}
-
-/* Map Interactive Pins */
-.pin {
-  position: absolute;
-  z-index: 4;
-  border: 2px solid #f6e7c8;
-  background: #72482e;
-  color: #fff0d2;
-  width: 34px;
-  height: 34px;
-  border-radius: 50% 50% 50% 6px;
-  transform: rotate(-45deg);
-  box-shadow: 0 3px 0 #4a3021;
-  display: grid;
-  place-items: center;
-  transition: transform 0.2s ease, background 0.2s ease;
-  padding: 0;
-}
-
-.pin svg {
-  transform: rotate(45deg);
-}
-
-.pin:hover,
-.pin.active {
-  background: #c17a32;
-  transform: rotate(-45deg) scale(1.16);
-}
-
-.pin.p1 {
-  left: 54%;
-  top: 48%;
-}
-
-.pin.p2 {
-  left: 47%;
-  top: 54%;
-}
-
-.pin.p3 {
-  left: 40%;
-  top: 60%;
-}
-
-.pin.p4 {
-  left: 33%;
-  top: 67%;
-}
-
-.pin.p5 {
-  left: 25%;
-  top: 74%;
-}
-
-.map-legend {
+.map-hover-box .hover-top-row {
   display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  padding: 10px 4px 0;
-  font: 10px 'DM Mono', monospace;
-  color: #796044;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  gap: 6px;
 }
 
-.legend-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #8a5534;
-  margin-right: 5px;
+.map-hover-box .hover-tag {
+  font: 9px/1 'DM Mono', monospace;
+  font-weight: 700;
+  color: #704a30;
+  background: #ebd8b7;
+  border: 1px solid #c9a879;
+  border-radius: 0.125rem; /* rounded-sm */
+  padding: 2px 6px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.map-hover-box .hover-status {
+  font: 9px/1 'DM Mono', monospace;
+  font-weight: 600;
+  color: #8c7054;
+  white-space: nowrap;
+}
+
+.map-hover-box .hover-status.discovered {
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: 0.125rem;
+  padding: 2px 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.map-hover-box .hover-title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #3e2819;
+  margin: 0 0 4px;
+}
+
+.map-hover-box .hover-type {
+  font-size: 10px;
+  color: #7d654c;
+  line-height: 1.3;
+  margin-bottom: 7px;
+  font-family: 'DM Mono', monospace;
+}
+
+.map-hover-box .hover-coords {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font: 10px 'DM Mono', monospace;
+  color: #8a6544;
+  background: #f7eddc;
+  padding: 3px 7px;
+  border-radius: 0.125rem;
+  border: 1px dashed #d5be9b;
+}
+
+.map-hover-box .hover-coords svg {
+  flex-shrink: 0;
+  color: #a36f45;
+}
+
+.map-hover-box .hover-hint {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid #ead6b4;
+  font-size: 10px;
+  font-weight: 700;
+  color: #8a5534;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Destination List Items */
@@ -760,7 +851,8 @@ button {
   display: grid;
 }
 
-.modal.flashcard-modal {
+.modal.flashcard-modal,
+.modal.crud-modal {
   max-width: 620px;
   width: 100%;
   max-height: 92vh;
@@ -842,6 +934,32 @@ button {
   color: #795d40;
   font-weight: 500;
   white-space: nowrap;
+}
+
+.card-reading-timer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 11px 'DM Mono', monospace;
+  font-weight: 600;
+  color: #704a30;
+  background: #ebd8b7;
+  border: 1px solid #c9a879;
+  border-radius: 0.125rem;
+  padding: 2px 7px;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.card-reading-timer-badge.ready {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.card-reading-timer-badge svg {
+  display: block;
 }
 
 /* 3D Interactive Flashcard Element */
@@ -1036,6 +1154,225 @@ button {
   .passport {
     grid-column: 1 / -1;
   }
+}
+
+/* ==========================================================
+   FLASHCARD CRUD OPERATIONS & EDITOR MODAL
+   ========================================================== */
+.edit-deck-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 9px;
+  border-radius: 0.375rem; /* rounded-md */
+  background: #f4e5c8;
+  border: 1px solid #c8a87b;
+  color: #63432a;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.edit-deck-btn:hover {
+  background: #ecdcc3;
+  border-color: #a9875f;
+  color: #3b281c;
+}
+
+.crud-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #eedcc0;
+  border: 1px solid #d4be9b;
+  border-radius: 0.375rem; /* rounded-md */
+  padding: 8px 10px;
+  margin: 12px 0 16px;
+  flex-wrap: wrap;
+}
+
+.crud-tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.crud-tabs-label {
+  font: 10px 'DM Mono', monospace;
+  font-weight: 700;
+  color: #795d40;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.crud-tabs-list {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.crud-tab-btn {
+  font: 11px 'DM Mono', monospace;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 0.125rem; /* rounded-sm */
+  border: 1px solid #c9a879;
+  background: #fbf3e4;
+  color: #63432a;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.crud-tab-btn:hover {
+  background: #fdf8ee;
+  border-color: #9b6638;
+}
+
+.crud-tab-btn.active {
+  background: #68452d;
+  color: #fff3dc;
+  border-color: #442a18;
+}
+
+.crud-add-card-btn {
+  font-size: 11px !important;
+  padding: 5px 10px !important;
+  white-space: nowrap;
+}
+
+.crud-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crud-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.crud-form label {
+  font: 11px 'DM Mono', monospace;
+  font-weight: 700;
+  color: #6f523b;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.crud-input,
+.crud-textarea {
+  width: 100%;
+  background: #fffcf5;
+  border: 1px solid #c8a87b;
+  border-radius: 0.375rem; /* rounded-md */
+  padding: 8px 11px;
+  font-size: 13px;
+  line-height: 1.45;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  color: #3b281c;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.crud-input:focus,
+.crud-textarea:focus {
+  outline: none;
+  border-color: #8a5534;
+  box-shadow: 0 0 0 2px rgba(138, 85, 52, 0.2);
+  background: #ffffff;
+}
+
+.crud-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid #dfcbab;
+  flex-wrap: wrap;
+}
+
+.crud-left-actions,
+.crud-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.danger-btn {
+  background: #fdf2f2;
+  border: 1px solid #f87171;
+  color: #991b1b;
+  padding: 8px 12px;
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.danger-btn:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.subtle-link-btn {
+  background: transparent;
+  border: none;
+  color: #8a5534;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: color 0.15s ease;
+}
+
+.subtle-link-btn:hover {
+  color: #55341f;
+}
+
+/* Confirmation Modal Dialog Box */
+.confirm-modal-box {
+  max-width: 400px;
+  background: #fffdf7;
+  border: 2px solid #bfa075;
+  border-radius: 0.375rem; /* rounded-md */
+  padding: 22px 24px;
+  box-shadow: 0 10px 25px rgba(50, 35, 20, 0.3);
+  animation: modalPop 0.18s ease-out;
+}
+
+.confirm-modal-box h3 {
+  font-size: 16px;
+  color: #4a2f1b;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.confirm-modal-box p {
+  font-size: 13px;
+  color: #5d422f;
+  line-height: 1.5;
+  margin: 0 0 18px;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 @media (max-width: 560px) {
